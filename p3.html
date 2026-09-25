@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Corner Restaurant</title>
+
+    <style>
+        /* =========================
+           GENERAL STYLES
+        ========================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #fff5e6, #fdebd0);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* =========================
+           HEADER
+        ========================== */
+
+        header {
+            min-height: 320px;
+            background:
+                linear-gradient(rgba(211, 84, 0, 0.75), rgba(230, 126, 34, 0.75)),
+                linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .hero-content {
+            animation: fadeDown 1s ease;
+        }
+
+        header h1 {
+            font-size: clamp(2.5rem, 7vw, 5rem);
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 25px;
+        }
+
+        .hero-button {
+            display: inline-block;
+            background: white;
+            color: #d35400;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .hero-button:hover {
+            background: #333;
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================== */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: #d35400;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+
+        nav a {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            margin: 5px 15px;
+            font-weight: bold;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 3px;
+            background: white;
+            left: 50%;
+            bottom: -7px;
+            transition: 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        nav a:hover {
+            color: #ffe5cc;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================== */
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 40px auto;
+        }
+
+        section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+
+        section h2 {
+            color: #d35400;
+            margin-bottom: 15px;
+            border-bottom: 3px solid #f5d6b3;
+            padding-bottom: 8px;
+        }
+
+        /* =========================
+           WELCOME
+        ========================== */
+
+        .welcome {
+            text-align: center;
+        }
+
+        .welcome p {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* =========================
+           SPECIAL ANNOUNCEMENT
+        ========================== */
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff0dc, #faebd7);
+            border-left: 6px solid #e67e22;
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .highlight-box:hover {
+            transform: translateX(8px);
+            box-shadow: 0 8px 20px rgba(230,126,34,0.2);
+        }
+
+        .highlight-box h3 {
+            color: #d35400;
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           MENU CARDS
+        ========================== */
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .food-card {
+            background: #fffaf5;
+            border: 1px solid #f1d5bb;
+            border-radius: 12px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .food-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            background: #fff1df;
+            box-shadow: 0 12px 25px rgba(211,84,0,0.18);
+        }
+
+        .food-icon {
+            font-size: 45px;
+            margin-bottom: 10px;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .food-card:hover .food-icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .food-card h3 {
+            color: #d35400;
+            margin-bottom: 5px;
+        }
+
+        .category {
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .price {
+            display: inline-block;
+            margin-top: 12px;
+            background: #e67e22;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* =========================
+           CSS ONLY MENU FILTER
+        ========================== */
+
+        .filter-buttons {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .filter-buttons label {
+            display: inline-block;
+            background: #f5e0cc;
+            color: #a84300;
+            padding: 8px 18px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .filter-buttons label:hover {
+            background: #e67e22;
+            color: white;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        /* Default: show everything */
+        #all:checked ~ .menu-grid .food-card {
+            display: block;
+        }
+
+        #italian:checked ~ .menu-grid .food-card,
+        #indian:checked ~ .menu-grid .food-card,
+        #fastfood:checked ~ .menu-grid .food-card,
+        #beverage:checked ~ .menu-grid .food-card {
+            display: none;
+        }
+
+        #italian:checked ~ .menu-grid .italian {
+            display: block;
+        }
+
+        #indian:checked ~ .menu-grid .indian {
+            display: block;
+        }
+
+        #fastfood:checked ~ .menu-grid .fastfood {
+            display: block;
+        }
+
+        #beverage:checked ~ .menu-grid .beverage {
+            display: block;
+        }
+
+        /* =========================
+           OPENING HOURS
+        ========================== */
+
+        .hours {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .hour-box {
+            background: #fff5e8;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .hour-box:hover {
+            background: #e67e22;
+            color: white;
+            transform: scale(1.03);
+        }
+
+        .hour-box h3 {
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           CONTACT
+        ========================== */
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .contact-card {
+            padding: 20px;
+            background: #fff7ef;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 18px rgba(0,0,0,0.1);
+        }
+
+        .contact-card span {
+            font-size: 35px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* =========================
+           CSS ONLY FAQ
+        ========================== */
+
+        details {
+            margin: 12px 0;
+            background: #fff5e8;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        summary {
+            color: #d35400;
+            font-weight: bold;
+        }
+
+        details p {
+            margin-top: 10px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #333;
+            color: white;
+        }
+
+        footer a {
+            color: #f5b041;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* =========================
+           ANIMATIONS
+        ========================== */
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* =========================
+           RESPONSIVE DESIGN
+        ========================== */
+
+        @media (max-width: 900px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav a {
+                margin: 5px 8px;
+                font-size: 0.9rem;
+            }
+
+            section {
+                padding: 20px;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hours {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                min-height: 280px;
+            }
+        }
+    
+        /* Food photography and restaurant background */
+        body {
+            background:
+                linear-gradient(rgba(255, 248, 238, 0.88), rgba(255, 244, 225, 0.92)),
+                url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=2000&q=80")
+                center/cover fixed no-repeat;
+        }
+
+        header {
+            background:
+                linear-gradient(rgba(90, 35, 5, 0.55), rgba(190, 80, 10, 0.62)),
+                url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2000&q=80")
+                center/cover no-repeat;
+            min-height: 420px;
+        }
+
+        .food-card {
+            padding: 0 0 22px;
+            overflow: hidden;
+        }
+
+        .food-image {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.45s ease, filter 0.45s ease;
+        }
+
+        .food-card:hover .food-image {
+            transform: scale(1.08);
+            filter: brightness(1.08);
+        }
+
+        .food-card h3,
+        .food-card .category,
+        .food-card .price {
+            position: relative;
+            z-index: 1;
+        }
+
+        .food-card h3 {
+            margin-top: 16px;
+        }
+
+        .food-card .category {
+            margin-bottom: 4px;
+        }
+
+        .price {
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .price:hover {
+            transform: scale(1.08);
+            background: #a84300;
+        }
+
+        .hero-button:focus,
+        nav a:focus,
+        label:focus,
+        summary:focus {
+            outline: 3px solid #f5b041;
+            outline-offset: 3px;
+        }
+
+        /* Responsive food images */
+        @media (max-width: 600px) {
+            .food-image {
+                height: 210px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="hero-content">
+            <h1>Food Corner</h1>
+            <p>Delicious Food | Great Taste | Happy Moments</p>
+            <a href="#menu" class="hero-button">Explore Our Menu</a>
+        </div>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#hours">Hours</a>
+        <a href="#contact">Contact</a>
+        <a href="#faq">FAQ</a>
+    </nav>
+
+    <main class="container">
+
+        <!-- HOME -->
+        <section id="home" class="welcome">
+            <h2>Welcome to Food Corner</h2>
+
+            <p>
+                Welcome to Food Corner Restaurant. We serve fresh,
+                delicious and hygienic food for our customers.
+                Enjoy your favorite meals with family and friends!
+            </p>
+
+            <div class="highlight-box">
+                <h3>Special Announcement</h3>
+
+                <p>
+                    <strong>Free home delivery</strong>
+                    on all orders above
+                    <strong>₹500</strong>!
+                </p>
+
+                <p>
+                    Order now and enjoy your favorite meals at home.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- MENU -->
+        <section id="menu">
+
+            <h2>Our Special Menu</h2>
+
+            <!-- CSS-only filter -->
+            <input type="radio" name="food-filter" id="all" checked>
+            <input type="radio" name="food-filter" id="italian">
+            <input type="radio" name="food-filter" id="indian">
+            <input type="radio" name="food-filter" id="fastfood">
+            <input type="radio" name="food-filter" id="beverage">
+
+            <div class="filter-buttons">
+                <label for="all">All</label>
+                <label for="italian">Italian</label>
+                <label for="indian">Indian</label>
+                <label for="fastfood">Fast Food</label>
+                <label for="beverage">Beverages</label>
+            </div>
+
+            <div class="menu-grid">
+
+                <div class="food-card italian">
+                    
+                    <img class="food-image" src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=900&q=80" alt="Pizza">
+                    <h3>Pizza</h3>
+                    <p class="category">Italian</p>
+                    <span class="price">₹250</span>
+                </div>
+
+                <div class="food-card indian">
+                    
+                    
+                    <img class="food-image" src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=900&q=80" alt="Paneer Tikka">
+                    <h3>Paneer Tikka</h3>
+                    <p class="category">Indian</p>
+                    <span class="price">₹180</span>
+                </div>
+
+                <div class="food-card fastfood">
+                    
+                    
+                    <img class="food-image" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=900&q=80" alt="Veg Burger">
+                    <h3>Veg Burger</h3>
+                    <p class="category">Fast Food</p>
+                    <span class="price">₹120</span>
+                </div>
+
+                <div class="food-card beverage">
+                    
+                    
+                    <img class="food-image" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=900&q=80" alt="Cold Coffee">
+                    <h3>Cold Coffee</h3>
+                    <p class="category">Beverage</p>
+                    <span class="price">₹100</span>
+                </div>
+
+                <div class="food-card indian">
+                    
+                    
+                    <img class="food-image" src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=900&q=80" alt="Veg Thali">
+                    <h3>Veg Thali</h3>
+                    <p class="category">Indian</p>
+                    <span class="price">₹220</span>
+                </div>
+
+                <div class="food-card italian">
+                    
+                    
+                    <img class="food-image" src="https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=900&q=80" alt="White Pasta">
+                    <h3>White Pasta</h3>
+                    <p class="category">Italian</p>
+                    <span class="price">₹200</span>
+                </div>
+
+                <div class="food-card fastfood">
+                    
+                    
+                    <img class="food-image" src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=900&q=80" alt="French Fries">
+                    <h3>French Fries</h3>
+                    <p class="category">Fast Food</p>
+                    <span class="price">₹90</span>
+                </div>
+
+                <div class="food-card beverage">
+                    
+                    
+                    <img class="food-image" src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=900&q=80" alt="Fresh Lime">
+                    <h3>Fresh Lime</h3>
+                    <p class="category">Beverage</p>
+                    <span class="price">₹70</span>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- OPENING HOURS -->
+        <section id="hours">
+
+            <h2>Opening Hours</h2>
+
+            <div class="hours">
+
+                <div class="hour-box">
+                    <h3>Monday - Friday</h3>
+                    <p>11:00 AM - 10:00 PM</p>
+                </div>
+
+                <div class="hour-box">
+                    <h3>Saturday - Sunday</h3>
+                    <p>11:00 AM - 10:00 PM</p>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- CONTACT -->
+        <section id="contact">
+
+            <h2>Contact Us</h2>
+
+            <div class="contact-grid">
+
+                <div class="contact-card">
+                    
+                    <h3>Address</h3>
+                    <p>Main Market, Food Street</p>
+                </div>
+
+                <div class="contact-card">
+                    
+                    <h3>Phone</h3>
+                    <p>+91 98765 43210</p>
+                </div>
+
+                <div class="contact-card">
+                    
+                    <h3>Email</h3>
+                    <p>foodcorner@example.com</p>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- FAQ -->
+        <section id="faq">
+
+            <h2>Frequently Asked Questions</h2>
+
+            <details>
+                <summary>Do you provide home delivery?</summary>
+                <p>
+                    Yes! We provide free home delivery on orders above ₹500.
+                </p>
+            </details>
+
+            <details>
+                <summary>What are your opening hours?</summary>
+                <p>
+                    We are open every day from 11:00 AM to 10:00 PM.
+                </p>
+            </details>
+
+            <details>
+                <summary>Do you have vegetarian food?</summary>
+                <p>
+                    Yes! Our menu includes a wide variety of vegetarian dishes.
+                </p>
+            </details>
+
+            <details>
+                <summary>Can I make a reservation?</summary>
+                <p>
+                    Yes. Please contact us by phone to make a reservation.
+                </p>
+            </details>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2026 Food Corner Restaurant</p>
+        <p>
+            Made with HTML & CSS
+        </p>
+    </footer>
+
+</body>
+</html>
